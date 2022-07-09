@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities
 {
-    public class Incident
+    public class Incedent
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
