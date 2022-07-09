@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ContactService : IService<Contact>, IBaseService<Contact>
+    public class ContactService : IBaseService<Contact>, IService<Contact>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -31,18 +31,15 @@ namespace BLL.Services
             }
         }
 
-        public async Task DeleteAsync(Contact item)
+        public async Task DeleteAsync(string email)
         {
-            var dbcontact = await _unitOfWork.ContactRepository.GetAsync(item.Email);
-            if (dbcontact is not null)
-            {
-                await _unitOfWork.ContactRepository.DeleteAsync(item); ;
-            }
-            else
+            var dbcontact = await _unitOfWork.ContactRepository.GetAsync(email);
+            if (dbcontact is null)
             {
                 throw new ArgumentException();
             }
-            
+            await _unitOfWork.ContactRepository.DeleteAsync(dbcontact);
+
         }
 
         public async Task<IEnumerable<Contact>> GetAllAsync()
@@ -52,12 +49,16 @@ namespace BLL.Services
 
         public async Task<Contact> GetAsync(string identifier)
         {
-            return await _unitOfWork.ContactRepository.GetAsync(identifier);
+            var result =  await _unitOfWork.ContactRepository.GetAsync(identifier);
+            if (result is not null)
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
-        public async Task UpdateAsync(Contact item)
-        {
-            await _unitOfWork.ContactRepository.UpdateAsync(item);
-        }
     }
 }

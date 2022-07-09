@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class IncedentService : IIncedentService, IService<Incedent>
+    public class IncedentService : IIncedentService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,7 +19,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddAllRecords(AllEntitiesAddModel model)
+        public async Task AddAllRecords(IncedentAddModel model)
         {
             var dbaccount = await _unitOfWork.AccountRepository.GetAsync(model.AccountName);
             if(dbaccount is null)
@@ -56,9 +56,14 @@ namespace BLL.Services
 
         }
 
-        public async Task DeleteAsync(Incedent item)
+        public async Task DeleteAsync(string name)
         {
-            await _unitOfWork.IncedentRepository.DeleteAsync(item);
+            var dbincedent = await _unitOfWork.IncedentRepository.GetAsync(name);
+            if(dbincedent is null)
+            {
+                throw new ArgumentException();
+            }
+            await _unitOfWork.IncedentRepository.DeleteAsync(dbincedent);
         }
 
         public async Task<IEnumerable<Incedent>> GetAllAsync()
@@ -68,7 +73,15 @@ namespace BLL.Services
 
         public async Task<Incedent> GetAsync(string identifier)
         {
-            return await _unitOfWork.IncedentRepository.GetAsync(identifier);
+            var result =  await _unitOfWork.IncedentRepository.GetAsync(identifier);
+            if (result is not null)
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

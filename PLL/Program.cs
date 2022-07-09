@@ -1,4 +1,9 @@
+using BLL.Astractions;
+using BLL.Services;
 using DAL;
+using DAL.Abstractions;
+using DAL.Entities;
+using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +20,13 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<IncidentDbContext>(options => options
     .UseSqlServer(connectionString, b => b.MigrationsAssembly("DAL")));
 
-
+builder.Services.AddScoped<IRepository<Account>, AccountRepository>();
+builder.Services.AddScoped<IRepository<Contact>, ContactRepository>();
+builder.Services.AddScoped<IRepository<Incedent>, IncedentRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IIncedentService, IncedentService>();
+builder.Services.AddScoped<IService<Account>, AccountService>();
+builder.Services.AddScoped<IService<Contact>, ContactService>();
 
 var app = builder.Build();
 
