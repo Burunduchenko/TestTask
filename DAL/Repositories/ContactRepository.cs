@@ -1,5 +1,6 @@
 ﻿using DAL.Abstractions;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,13 +31,15 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<Contact>> GetAllAsync()
         {
-            var contacts = Task.Factory.StartNew(() => _databaase.Contacts.AsEnumerable());
+            var contacts = Task.Factory.StartNew(() => 
+            _databaase.Contacts.Include(x => x.Account).AsEnumerable());
             return await contacts;
         }
 
         public async Task<Contact> GetAsync(string email)
         {
-            var contact = Task.Factory.StartNew(() => _databaase.Contacts.FirstOrDefault(x => x.Email == email));
+            var contact = Task.Factory.StartNew(() => 
+            _databaase.Contacts.Include(x => x.Account).FirstOrDefault(x => x.Email == email));
             return await contact;
         }
 
