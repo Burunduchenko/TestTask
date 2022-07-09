@@ -25,7 +25,7 @@ namespace DAL.Repositories
 
         public async Task DeleteAsync(Account item)
         {
-            await Task.Factory.StartNew(()=> _databaase.Accounts.Remove(item));
+            await Task.Factory.StartNew(() => _databaase.Accounts.Remove(item));
             await _databaase.SaveChangesAsync();
         }
 

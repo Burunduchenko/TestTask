@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class AccountService : IService<Account>, IBaseService<Account>
+    public class AccountService : IBaseService<Account>, IService<Account>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -31,17 +31,15 @@ namespace BLL.Services
             }
         }
 
-        public async Task DeleteAsync(Account item)
+        public async Task DeleteAsync(string name)
         {
-            var dbaccount = await _unitOfWork.AccountRepository.GetAsync(item.Name);
+            var dbaccount = await _unitOfWork.AccountRepository.GetAsync(name);
             if (dbaccount is not null)
-            {
-                await _unitOfWork.AccountRepository.DeleteAsync(item);
-            }
-            else
             {
                 throw new ArgumentException();
             }
+            await _unitOfWork.AccountRepository.DeleteAsync(dbaccount);
+
         }
 
         public async Task<IEnumerable<Account>> GetAllAsync()
@@ -51,12 +49,15 @@ namespace BLL.Services
 
         public async Task<Account> GetAsync(string identifier)
         {
-            return await _unitOfWork.AccountRepository.GetAsync(identifier);
-        }
-
-        public async Task UpdateAsync(Account item)
-        {
-            await _unitOfWork.AccountRepository.UpdateAsync(item);
+            var result = await _unitOfWork.AccountRepository.GetAsync(identifier);
+            if(result is not null)
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

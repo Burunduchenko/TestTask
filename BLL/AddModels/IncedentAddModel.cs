@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.AddModels
 {
-    public class AllEntitiesAddModel
+    public class IncedentAddModel
     {
         public string AccountName { get; set; }
         public string ContactFirstName { get; set; }

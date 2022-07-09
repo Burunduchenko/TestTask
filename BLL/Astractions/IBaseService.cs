@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace BLL.Astractions
 {
-    public interface IBaseService<T> where T : class 
+    public interface IBaseService<T> where T : class
     {
-        public Task AddAsync(T item);
-        public Task UpdateAsync(T item);
+        
+        public Task<T> GetAsync(string identifier);
+        public Task<IEnumerable<T>> GetAllAsync();
+        public Task DeleteAsync(string identifier);
     }
 }
