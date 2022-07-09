@@ -12,7 +12,7 @@ namespace DAL
     {
         public IncidentDbContext(DbContextOptions<IncidentDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Account> Accounts { get; set; }
