@@ -17,7 +17,7 @@ namespace BLL
 
             CreateMap<Contact, ContactViewModel>().ReverseMap();
             CreateMap<Contact, ContactAddModel>().ReverseMap();
-            CreateMap<Incedent, AccountViewModel>().ReverseMap();
+            CreateMap<Incedent, IncedentViewModel>().ReverseMap();
 
             CreateMap<Account, AccountViewModel>().ReverseMap();
             CreateMap<Account, AccountAddModel>().ReverseMap();

@@ -28,11 +28,11 @@ namespace BLL.Services
             }
 
             var dbcontact = await _unitOfWork.ContactRepository.GetAsync(model.ContactEmail);
-            if(dbaccount is not null)
+            if(dbcontact is not null)
             {
                 await _unitOfWork.ContactRepository.UpdateAsync(new Contact() 
                 {   Account = dbaccount, 
-                    Email = model.ContactEmail,
+                    Email = dbcontact.Email,
                     FirstName = model.ContactFirstName, 
                     LastName = model.ContactLastName
                 });
@@ -57,14 +57,14 @@ namespace BLL.Services
 
         }
 
-        public async Task DeleteAsync(string email)
+        public async Task DeleteAsync(string name)
         {
-            var dbcontact = await _unitOfWork.ContactRepository.GetAsync(email);
-            if (dbcontact is null)
+            var dbincedent = await _unitOfWork.IncedentRepository.GetAsync(name);
+            if (dbincedent is null)
             {
                 throw new ArgumentException();
             }
-            await _unitOfWork.ContactRepository.DeleteAsync(dbcontact);
+            await _unitOfWork.IncedentRepository.DeleteAsync(dbincedent);
             await _unitOfWork.SaveChangesAsync();
 
         }
@@ -80,6 +80,7 @@ namespace BLL.Services
             var result = await _unitOfWork.IncedentRepository.GetAsync(identifier);
             if (result is not null)
             {
+                
                 return _mapper.Map<IncedentViewModel>(result);
             }
             else

@@ -27,8 +27,6 @@ namespace DAL
             builder.Entity<Contact>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
-
-            base.OnModelCreating(builder);
         }
     }
 }

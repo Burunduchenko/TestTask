@@ -22,7 +22,8 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<IncidentDbContext>(options => options
-    .UseSqlServer(connectionString, b => b.MigrationsAssembly("DAL")));
+    .UseSqlServer(connectionString, b => b.MigrationsAssembly("DAL"))
+    .EnableSensitiveDataLogging(), ServiceLifetime.Scoped);
 
 var mapperConfig = new MapperConfiguration(mc =>
 {

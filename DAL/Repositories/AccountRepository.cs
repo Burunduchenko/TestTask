@@ -11,39 +11,38 @@ namespace DAL.Repositories
 {
     public class AccountRepository : IRepository<Account>
     {
-        private IncidentDbContext _databaase;
+        private IncidentDbContext _database;
 
         public AccountRepository(IncidentDbContext incidentDbContext)
         {
-            _databaase = incidentDbContext;
+            _database = incidentDbContext;
         }
         public async Task AddAsync(Account item)
         {
-            await _databaase.Accounts.AddAsync(item);
+            await _database.Accounts.AddAsync(item);
         }
 
         public async Task DeleteAsync(Account item)
         {
-            await Task.Factory.StartNew(() => _databaase.Accounts.Remove(item));
+            await Task.Factory.StartNew(() => _database.Accounts.Remove(item));
         }
 
         public async Task<IEnumerable<Account>> GetAllAsync()
         {
             var accounts = Task.Factory.StartNew(() =>
-            _databaase.Accounts.Include(x => x.Incident).Include(x => x.Contacts).AsEnumerable());
+            _database.Accounts.Include(x => x.Incident).Include(x => x.Contacts).AsEnumerable());
             return await accounts;
         }
 
         public async Task<Account> GetAsync(string name)
         {
-            var account = Task.Factory.StartNew(() =>
-            _databaase.Accounts.Include(x => x.Incident).Include(x => x.Contacts).FirstOrDefault(x => x.Name == name));
-            return await account;
+            var account = await _database.Accounts.Include(x => x.Incident).Include(x => x.Contacts).FirstOrDefaultAsync(x => x.Name == name);
+            return account;
         }
 
         public async Task UpdateAsync(Account item)
         {
-            await Task.Factory.StartNew(() => _databaase.Accounts.Update(item));
+            await Task.Factory.StartNew(() => _database.Accounts.Update(item));
         }
     }
 }

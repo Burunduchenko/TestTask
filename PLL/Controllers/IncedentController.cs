@@ -31,7 +31,7 @@ namespace PLL.Controller
         {
             try
             {
-                var incedent = _incedentService.GetAsync(name);
+                var incedent = await _incedentService.GetAsync(name);
                 return Ok(incedent);
             }
             catch (ArgumentException)

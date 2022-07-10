@@ -36,14 +36,16 @@ namespace DAL.Repositories
 
         public async Task<Contact> GetAsync(string email)
         {
-            var contact = Task.Factory.StartNew(() => 
-            _databaase.Contacts.Include(x => x.Account).FirstOrDefault(x => x.Email == email));
-            return await contact;
+            var contact = await _databaase.Contacts.FirstOrDefaultAsync(x => x.Email == email);
+            return contact;
         }
 
         public async Task UpdateAsync(Contact item)
         {
-            await Task.Factory.StartNew(() => _databaase.Contacts.Update(item));
+            var contact = await _databaase.Contacts.Where(x => x.Email == item.Email).FirstOrDefaultAsync();
+            contact.FirstName = item.FirstName;
+            contact.LastName = item.LastName;
+            contact.Account = item.Account;
         }
     }
 }

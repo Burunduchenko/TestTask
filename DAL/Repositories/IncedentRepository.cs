@@ -11,39 +11,38 @@ namespace DAL.Repositories
 {
     public class IncedentRepository : IRepository<Incedent>
     {
-        private IncidentDbContext _databaase;
+        private IncidentDbContext _database;
 
         public IncedentRepository(IncidentDbContext incidentDbContext)
         {
-            _databaase = incidentDbContext;
+            _database = incidentDbContext;
         }
         public async Task AddAsync(Incedent item)
         {
-            await _databaase.Incidents.AddAsync(item);
+            await _database.Incidents.AddAsync(item);
         }
 
         public async Task DeleteAsync(Incedent item)
         {
-            await Task.Factory.StartNew(() => _databaase.Incidents.Remove(item));
+            await Task.Factory.StartNew(() => _database.Incidents.Remove(item));
         }
 
         public async Task<IEnumerable<Incedent>> GetAllAsync()
         {
             var incedents = Task.Factory.StartNew(() => 
-            _databaase.Incidents.Include(x => x.Accounts).AsEnumerable());
+            _database.Incidents.Include(x => x.Accounts).AsEnumerable());
             return await incedents;
         }
 
         public async Task<Incedent> GetAsync(string name)
         {
-            var incedent = Task.Factory.StartNew(() => 
-            _databaase.Incidents.Include(x => x.Accounts).FirstOrDefault(x => x.Name == name));
-            return await incedent;
+            var incedent = await _database.Incidents.Include(x => x.Accounts).FirstOrDefaultAsync(x => x.Name == name);
+            return incedent;
         }
 
         public async Task UpdateAsync(Incedent item)
         {
-            await Task.Factory.StartNew(() => _databaase.Incidents.Update(item));
+            await Task.Factory.StartNew(() => _database.Incidents.Update(item));
         }
     }
 }
