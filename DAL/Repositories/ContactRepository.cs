@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class ContactRepository : IRepository<Contact>
+    public class ContactRepository : IUpdateable<Contact>
     {
         private IncidentDbContext _databaase;
 

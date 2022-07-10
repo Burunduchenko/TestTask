@@ -11,7 +11,6 @@ namespace DAL.Abstractions
         public Task AddAsync(T item);
         public Task<T> GetAsync(string identifier);
         public Task<IEnumerable<T>> GetAllAsync();
-        public Task UpdateAsync(T item);
         public Task DeleteAsync(T item);
     }
 }

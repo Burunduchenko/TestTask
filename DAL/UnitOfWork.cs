@@ -20,7 +20,7 @@ namespace DAL
 
         private IRepository<Account> _AccountRepository;
 
-        private IRepository<Contact> _ContactRepository;
+        private IUpdateable<Contact> _ContactRepository;
 
         private IRepository<Incedent> _IncedentRepository;
 
@@ -36,7 +36,7 @@ namespace DAL
             }
         }
 
-        public IRepository<Contact> ContactRepository
+        public IUpdateable<Contact> ContactRepository
         {
             get
             {

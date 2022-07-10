@@ -10,7 +10,7 @@ namespace DAL.Abstractions
     public interface IUnitOfWork
     {
         IRepository<Account> AccountRepository { get; }
-        IRepository<Contact> ContactRepository { get; }
+        IUpdateable<Contact> ContactRepository { get; }
         IRepository<Incedent> IncedentRepository { get; }
 
         Task<int> SaveChangesAsync();

@@ -34,7 +34,7 @@ IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<IRepository<Account>, AccountRepository>();
-builder.Services.AddScoped<IRepository<Contact>, ContactRepository>();
+builder.Services.AddScoped<IUpdateable<Contact>, ContactRepository>();
 builder.Services.AddScoped<IRepository<Incedent>, IncedentRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IService<IncedentViewModel, IncedentAddModel>, IncedentService>();

@@ -40,9 +40,5 @@ namespace DAL.Repositories
             return incedent;
         }
 
-        public async Task UpdateAsync(Incedent item)
-        {
-            await Task.Factory.StartNew(() => _database.Incidents.Update(item));
-        }
     }
 }

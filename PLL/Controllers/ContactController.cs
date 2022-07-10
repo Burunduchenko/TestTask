@@ -64,7 +64,7 @@ namespace PLL.Controller
             }
             catch (ArgumentException)
             {
-                return NotFound("There is no contact with provided name");
+                return NotFound("There is no contact with provided email");
             }
         }
     }

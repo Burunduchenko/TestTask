@@ -39,10 +39,5 @@ namespace DAL.Repositories
             var account = await _database.Accounts.Include(x => x.Incident).Include(x => x.Contacts).FirstOrDefaultAsync(x => x.Name == name);
             return account;
         }
-
-        public async Task UpdateAsync(Account item)
-        {
-            await Task.Factory.StartNew(() => _database.Accounts.Update(item));
-        }
     }
 }
