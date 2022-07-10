@@ -20,13 +20,11 @@ namespace DAL.Repositories
         public async Task AddAsync(Incedent item)
         {
             await _databaase.Incidents.AddAsync(item);
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Incedent item)
         {
             await Task.Factory.StartNew(() => _databaase.Incidents.Remove(item));
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Incedent>> GetAllAsync()
@@ -46,7 +44,6 @@ namespace DAL.Repositories
         public async Task UpdateAsync(Incedent item)
         {
             await Task.Factory.StartNew(() => _databaase.Incidents.Update(item));
-            await _databaase.SaveChangesAsync();
         }
     }
 }

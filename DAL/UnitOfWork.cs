@@ -59,5 +59,10 @@ namespace DAL
                 return _IncedentRepository;
             }
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _database.SaveChangesAsync();
+        }
     }
 }

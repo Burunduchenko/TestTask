@@ -20,13 +20,11 @@ namespace DAL.Repositories
         public async Task AddAsync(Contact item)
         {
             await _databaase.Contacts.AddAsync(item);
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Contact item)
         {
             await Task.Factory.StartNew(() => _databaase.Contacts.Remove(item));
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Contact>> GetAllAsync()
@@ -46,7 +44,6 @@ namespace DAL.Repositories
         public async Task UpdateAsync(Contact item)
         {
             await Task.Factory.StartNew(() => _databaase.Contacts.Update(item));
-            await _databaase.SaveChangesAsync();
         }
     }
 }

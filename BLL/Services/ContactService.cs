@@ -29,6 +29,7 @@ namespace BLL.Services
             if(dbcontact is null)
             {
                 await _unitOfWork.ContactRepository.AddAsync(_mapper.Map<Contact>(item));
+                await _unitOfWork.SaveChangesAsync();
             }
             else
             {
@@ -44,7 +45,7 @@ namespace BLL.Services
                 throw new ArgumentException();
             }
             await _unitOfWork.ContactRepository.DeleteAsync(dbcontact);
-
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ContactViewModel>> GetAllAsync()

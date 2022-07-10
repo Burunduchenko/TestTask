@@ -12,5 +12,7 @@ namespace DAL.Abstractions
         IRepository<Account> AccountRepository { get; }
         IRepository<Contact> ContactRepository { get; }
         IRepository<Incedent> IncedentRepository { get; }
+
+        Task<int> SaveChangesAsync();
      }
 }

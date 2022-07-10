@@ -10,7 +10,7 @@ namespace DAL.Entities
         public string Name { get; set; }
 
 
-        public virtual Incedent Incident { get; set; }
+        public virtual Incedent? Incident { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
     }
 }

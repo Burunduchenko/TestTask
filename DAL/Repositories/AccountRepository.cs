@@ -20,13 +20,11 @@ namespace DAL.Repositories
         public async Task AddAsync(Account item)
         {
             await _databaase.Accounts.AddAsync(item);
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Account item)
         {
             await Task.Factory.StartNew(() => _databaase.Accounts.Remove(item));
-            await _databaase.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Account>> GetAllAsync()
@@ -46,7 +44,6 @@ namespace DAL.Repositories
         public async Task UpdateAsync(Account item)
         {
             await Task.Factory.StartNew(() => _databaase.Accounts.Update(item));
-            await _databaase.SaveChangesAsync();
         }
     }
 }

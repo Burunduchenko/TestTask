@@ -53,6 +53,7 @@ namespace BLL.Services
                 Description = model.IncedentDescription,
                 Accounts = new List<Account>() { dbaccount }
             }) ;
+            await _unitOfWork.SaveChangesAsync();
 
         }
 
@@ -64,6 +65,7 @@ namespace BLL.Services
                 throw new ArgumentException();
             }
             await _unitOfWork.ContactRepository.DeleteAsync(dbcontact);
+            await _unitOfWork.SaveChangesAsync();
 
         }
 

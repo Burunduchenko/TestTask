@@ -14,11 +14,20 @@ namespace BLL
     {
         public AutoMapperProfile()
         {
-            CreateMap<Account, AccountViewModel>().ReverseMap();
-            CreateMap<Account, AccountAddModel>().ReverseMap();
+
             CreateMap<Contact, ContactViewModel>().ReverseMap();
             CreateMap<Contact, ContactAddModel>().ReverseMap();
             CreateMap<Incedent, AccountViewModel>().ReverseMap();
+
+            CreateMap<Account, AccountViewModel>().ReverseMap();
+            CreateMap<Account, AccountAddModel>().ReverseMap();
+            CreateMap<Contact, AccountAddModel>()
+                .ForMember(x => x.ContactFirstName, y => y.MapFrom(x => x.FirstName))
+                .ForMember(x => x.ContactLastName, y => y.MapFrom(x => x.LastName))
+                .ForMember(x => x.ContactEmail, y => y.MapFrom(x => x.Email))
+                .ReverseMap();
+
+
 
         }
     }

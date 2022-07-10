@@ -25,7 +25,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IncidentName = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    IncidentName = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
