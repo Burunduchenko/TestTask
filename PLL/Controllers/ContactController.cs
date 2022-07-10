@@ -1,4 +1,6 @@
-﻿using BLL.Astractions;
+﻿using BLL.AddModels;
+using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +12,9 @@ namespace PLL.Controller
     [ApiController]
     public class ContactController : ControllerBase
     {
-        private readonly IService<Contact> _contactService;
+        private readonly IService<ContactViewModel, ContactAddModel> _contactService;
 
-        public ContactController(IService<Contact> contactService)
+        public ContactController(IService<ContactViewModel, ContactAddModel> contactService)
         {
             _contactService = contactService;
         }
@@ -39,7 +41,7 @@ namespace PLL.Controller
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddAsync([FromBody] Contact contact)
+        public async Task<IActionResult> AddAsync([FromBody] ContactAddModel contact)
         {
             try
             {

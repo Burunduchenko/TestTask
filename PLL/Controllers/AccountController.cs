@@ -1,4 +1,6 @@
-﻿using BLL.Astractions;
+﻿using BLL.AddModels;
+using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +10,9 @@ namespace PLL.Controller
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IService<Account> _accountService;
+        private readonly IService<AccountViewModel, AccountAddModel> _accountService;
 
-        public AccountController(IService<Account> accountService)
+        public AccountController(IService<AccountViewModel, AccountAddModel> accountService)
         {
             _accountService = accountService;
         }
@@ -38,7 +40,7 @@ namespace PLL.Controller
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> AddAsync([FromBody] Account account)
+        public async Task<IActionResult> AddAsync([FromBody] AccountAddModel account)
         {
             try
             {

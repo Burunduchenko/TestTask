@@ -1,4 +1,7 @@
-﻿using BLL.Astractions;
+﻿using AutoMapper;
+using BLL.AddModels;
+using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Abstractions;
 using DAL.Entities;
 using System;
@@ -9,21 +12,23 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ContactService : IBaseService<Contact>, IService<Contact>
+    public class ContactService : IService<ContactViewModel, ContactAddModel>, IBaseService<ContactAddModel>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ContactService(IUnitOfWork unitOfWork)
+        public ContactService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task AddAsync(Contact item)
+        public async Task AddAsync(ContactAddModel item)
         {
             var dbcontact = await _unitOfWork.ContactRepository.GetAsync(item.Email);
             if(dbcontact is null)
             {
-                await _unitOfWork.ContactRepository.AddAsync(item);
+                await _unitOfWork.ContactRepository.AddAsync(_mapper.Map<Contact>(item));
             }
             else
             {
@@ -42,22 +47,23 @@ namespace BLL.Services
 
         }
 
-        public async Task<IEnumerable<Contact>> GetAllAsync()
+        public async Task<IEnumerable<ContactViewModel>> GetAllAsync()
         {
-            return await _unitOfWork.ContactRepository.GetAllAsync();
+            var result = await _unitOfWork.ContactRepository.GetAllAsync();
+            return result.Select(x => _mapper.Map<ContactViewModel>(x));
         }
 
-        public async Task<Contact> GetAsync(string identifier)
+        public async Task<ContactViewModel> GetAsync(string identifier)
         {
-            var result =  await _unitOfWork.ContactRepository.GetAsync(identifier);
+            var result = await _unitOfWork.ContactRepository.GetAsync(identifier);
             if (result is not null)
             {
-                return result;
+                return _mapper.Map<ContactViewModel>(result);
             }
             else
             {
                 throw new ArgumentException();
-            }
+            } 
         }
 
     }

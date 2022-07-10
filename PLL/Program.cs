@@ -1,5 +1,9 @@
+using AutoMapper;
+using BLL;
+using BLL.AddModels;
 using BLL.Astractions;
 using BLL.Services;
+using BLL.ViewModels;
 using DAL;
 using DAL.Abstractions;
 using DAL.Entities;
@@ -20,13 +24,21 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<IncidentDbContext>(options => options
     .UseSqlServer(connectionString, b => b.MigrationsAssembly("DAL")));
 
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new AutoMapperProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 builder.Services.AddScoped<IRepository<Account>, AccountRepository>();
 builder.Services.AddScoped<IRepository<Contact>, ContactRepository>();
 builder.Services.AddScoped<IRepository<Incedent>, IncedentRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IIncedentService, IncedentService>();
-builder.Services.AddScoped<IService<Account>, AccountService>();
-builder.Services.AddScoped<IService<Contact>, ContactService>();
+builder.Services.AddScoped<IService<IncedentViewModel, IncedentAddModel>, IncedentService>();
+builder.Services.AddScoped<IService<AccountViewModel, AccountAddModel>, AccountService>();
+builder.Services.AddScoped<IService<ContactViewModel, ContactAddModel>, ContactService>();
 
 var app = builder.Build();
 

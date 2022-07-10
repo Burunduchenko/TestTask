@@ -1,4 +1,7 @@
-﻿using BLL.Astractions;
+﻿using AutoMapper;
+using BLL.AddModels;
+using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Abstractions;
 using DAL.Entities;
 using System;
@@ -9,21 +12,23 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class AccountService : IBaseService<Account>, IService<Account>
+    public class AccountService : IService<AccountViewModel, AccountAddModel>, IBaseService<AccountAddModel>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper; 
 
-        public AccountService(IUnitOfWork unitOfWork)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task AddAsync(Account item)
+        public async Task AddAsync(AccountAddModel item)
         {
             var dbaccount = await _unitOfWork.AccountRepository.GetAsync(item.Name);
             if(dbaccount is null)
             {
-                await _unitOfWork.AccountRepository.AddAsync(item);
+                await _unitOfWork.AccountRepository.AddAsync(_mapper.Map<Account>(item));
             }
             else
             {
@@ -42,22 +47,24 @@ namespace BLL.Services
 
         }
 
-        public async Task<IEnumerable<Account>> GetAllAsync()
+        public async Task<IEnumerable<AccountViewModel>> GetAllAsync()
         {
-            return await _unitOfWork.AccountRepository.GetAllAsync();
+            var result = await _unitOfWork.AccountRepository.GetAllAsync();
+            return result.Select(x => _mapper.Map<AccountViewModel>(x));
         }
 
-        public async Task<Account> GetAsync(string identifier)
+        public async Task<AccountViewModel> GetAsync(string identifier)
         {
-            var result = await _unitOfWork.AccountRepository.GetAsync(identifier);
-            if(result is not null)
+            var account = await _unitOfWork.AccountRepository.GetAsync(identifier);
+            if (account is not null)
             {
-                return result;
+                return _mapper.Map<AccountViewModel>(account);
             }
             else
             {
                 throw new ArgumentException();
             }
         }
+
     }
 }

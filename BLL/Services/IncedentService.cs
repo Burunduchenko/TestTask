@@ -1,25 +1,25 @@
-﻿using BLL.AddModels;
+﻿using AutoMapper;
+using BLL.AddModels;
 using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Abstractions;
 using DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BLL.Services
 {
-    public class IncedentService : IIncedentService
+    public class IncedentService : IService<IncedentViewModel, IncedentAddModel>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public IncedentService(IUnitOfWork unitOfWork)
+        public IncedentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task AddAllRecords(IncedentAddModel model)
+        public async Task AddAsync(IncedentAddModel model)
         {
             var dbaccount = await _unitOfWork.AccountRepository.GetAsync(model.AccountName);
             if(dbaccount is null)
@@ -56,27 +56,29 @@ namespace BLL.Services
 
         }
 
-        public async Task DeleteAsync(string name)
+        public async Task DeleteAsync(string email)
         {
-            var dbincedent = await _unitOfWork.IncedentRepository.GetAsync(name);
-            if(dbincedent is null)
+            var dbcontact = await _unitOfWork.ContactRepository.GetAsync(email);
+            if (dbcontact is null)
             {
                 throw new ArgumentException();
             }
-            await _unitOfWork.IncedentRepository.DeleteAsync(dbincedent);
+            await _unitOfWork.ContactRepository.DeleteAsync(dbcontact);
+
         }
 
-        public async Task<IEnumerable<Incedent>> GetAllAsync()
+        public async Task<IEnumerable<IncedentViewModel>> GetAllAsync()
         {
-            return await _unitOfWork.IncedentRepository.GetAllAsync();
+            var result = await _unitOfWork.IncedentRepository.GetAllAsync();
+            return result.Select(x => _mapper.Map<IncedentViewModel>(x));
         }
 
-        public async Task<Incedent> GetAsync(string identifier)
+        public async Task<IncedentViewModel> GetAsync(string identifier)
         {
-            var result =  await _unitOfWork.IncedentRepository.GetAsync(identifier);
+            var result = await _unitOfWork.IncedentRepository.GetAsync(identifier);
             if (result is not null)
             {
-                return result;
+                return _mapper.Map<IncedentViewModel>(result);
             }
             else
             {

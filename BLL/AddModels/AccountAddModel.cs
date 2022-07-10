@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.Astractions
+namespace BLL.AddModels
 {
-    public interface IBaseService<Add> 
+    public class AccountAddModel
     {
-        public Task AddAsync(Add item);
+        public string Name { get; set; }
     }
 }

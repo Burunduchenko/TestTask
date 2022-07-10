@@ -1,5 +1,6 @@
 ﻿using BLL.AddModels;
 using BLL.Astractions;
+using BLL.ViewModels;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace PLL.Controller
     [ApiController]
     public class IncedentController : ControllerBase
     {
-        private readonly IIncedentService _incedentService;
+        private readonly IService<IncedentViewModel, IncedentAddModel> _incedentService;
 
-        public IncedentController(IIncedentService incedentService)
+        public IncedentController(IService<IncedentViewModel, IncedentAddModel> incedentService)
         {
             _incedentService = incedentService;
         }
@@ -44,7 +45,7 @@ namespace PLL.Controller
         {
             try
             {
-                await _incedentService.AddAllRecords(model);
+                await _incedentService.AddAsync(model);
                 return Created("localhost/IncedentDb/Incedents", model);
             }
             catch(ArgumentException)
